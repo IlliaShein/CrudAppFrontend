@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import './Styles/App.css';
 import AddPersonForm from './Components/AddPersonForm';
-import PersonsList from "./Components/PersonsList";
-import * as Api from "./Methods/Api";
+import { PersonsList } from "./Components/PersonsList";
+import * as Api from "./APIs/Api";
 
 function App() {
   const [persons, setPersons] = useState([]);
 
   const getPersons = async () => {
     const data = await Api.getPersons();
+    console.log(data);
     setPersons(data);
   };
 

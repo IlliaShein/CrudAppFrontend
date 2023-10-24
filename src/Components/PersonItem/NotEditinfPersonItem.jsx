@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import MyButton from '../UI/Button/MyButton';
+import { MyContext } from '../PersonsList';
 
-const NotEditingPersonItem = ({ person, number, onEdit, onRemove }) => {
+
+const NotEditingPersonItem = ({ onEdit, onRemove }) => {
+  const {person, number} = useContext(MyContext);
+
   return (
     <div className="person">
       <div className="person_content">

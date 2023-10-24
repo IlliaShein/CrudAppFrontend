@@ -1,32 +1,67 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 import MyButton from '../../UI/Button/MyButton';
 import EditingPersonItemSegment from './EditingPersonItemSegment';
+import { MyContext } from '../../PersonsList';
 
-const EditingPersonItem = ({ person, Save, Cancel }) => {
-  const [personData, setPersonData] = useState({ ...person });
+const schema = yup.object().shape({
+  id: yup.string().required(),
+  firstName: yup.string().required('First Name is required'),
+  lastName: yup.string().required('Last Name is required'),
+  age: yup
+    .number()
+    .typeError('Age must be a number')
+    .required('Age is required')
+    .positive('Age must be a positive number')
+    .integer('Age must be an integer'),
+  description: yup.string(),
+});
 
-  const processChanges = (e, fieldName) => {
-    const updatedPersonData = { ...personData, [fieldName]: e.target.value };
-    setPersonData(updatedPersonData);
+const EditingPersonItem = ({ Save, Cancel }) => {
+  const { person } = useContext(MyContext);
+  const { register, handleSubmit, setValue, formState: { errors } } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  useEffect(() => {
+    setValue('id', person.id);
+    setValue('firstName', person.firstName);
+    setValue('lastName', person.lastName);
+    setValue('age', person.age);
+    setValue('description', person.description);
+  }, [person, setValue]);
+
+  const onSubmit = (data) => {
+    console.log(data);
+    Save(data);
   };
 
-  const save = () => {
-    Save(personData);
+  const handleCancel = () => {
+    Cancel();
   };
 
   return (
-    <div className="person">
-      <div style={{ flexDirection: 'column', alignItems: 'start' }}>
-        <EditingPersonItemSegment label="First name" value={personData.firstName} onChange={(e) => processChanges(e, 'firstName')} />
-        <EditingPersonItemSegment label="Last name" value={personData.lastName} onChange={(e) => processChanges(e, 'lastName')} />
-        <EditingPersonItemSegment label="Age" value={personData.age} onChange={(e) => processChanges(e, 'age')} />
-        <EditingPersonItemSegment label="Description" value={personData.description} onChange={(e) => processChanges(e, 'description')} />
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className="person">
+        <div style={{ flexDirection: 'column', alignItems: 'start' }}>
+          <EditingPersonItemSegment label="First name" name="firstName" register={register} />
+          {errors.firstName && <p>{errors.firstName.message}</p>}
+          <EditingPersonItemSegment label="Last name" name="lastName" register={register} />
+          {errors.lastName && <p>{errors.lastName.message}</p>}
+          <EditingPersonItemSegment label="Age" name="age" register={register} />
+          {errors.age && <p>{errors.age.message}</p>}
+          <EditingPersonItemSegment label="Description" name="description" register={register} />
+        </div>
+        <div className="person__btns">
+          <MyButton type="submit">Save</MyButton>
+          <MyButton type="button" onClick={handleCancel}>
+            Cancel
+          </MyButton>
+        </div>
       </div>
-      <div className="person__btns">
-        <MyButton onClick={save}>Save</MyButton>
-        <MyButton onClick={Cancel}>Cancel</MyButton>
-      </div>
-    </div>
+    </form>
   );
 };
 

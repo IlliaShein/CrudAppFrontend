@@ -24,7 +24,6 @@ const PersonItem = function (props) {
 
   return (
     <NotEditingPersonItem
-      person={person}
       number={props.number}
       onEdit={() => setEditing(true)}
       onRemove={props.remove}

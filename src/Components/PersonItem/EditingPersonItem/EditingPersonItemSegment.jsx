@@ -1,9 +1,9 @@
 import React from 'react';
 
-const EditingPersonItemSegment = ({ label, value, onChange }) => {
+const EditingPersonItemSegment = ({ label, name, register }) => {
   return (
     <div>
-      {label}: <input className='myInput' value={value} onChange={onChange} />
+      {label}: <input className="myInput" {...register(name)} />
     </div>
   );
 };
