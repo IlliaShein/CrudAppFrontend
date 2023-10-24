@@ -5,6 +5,7 @@ import * as yup from 'yup';
 import MyButton from '../../UI/Button/MyButton';
 import EditingPersonItemSegment from './EditingPersonItemSegment';
 import { MyContext } from '../../PersonsList';
+import '../../../Styles/Errors.css';
 
 const schema = yup.object().shape({
   id: yup.string().required(),
@@ -47,11 +48,11 @@ const EditingPersonItem = ({ Save, Cancel }) => {
       <div className="person">
         <div style={{ flexDirection: 'column', alignItems: 'start' }}>
           <EditingPersonItemSegment label="First name" name="firstName" register={register} />
-          {errors.firstName && <p>{errors.firstName.message}</p>}
+          {errors.firstName && <p className='error'>{errors.firstName.message}</p>}
           <EditingPersonItemSegment label="Last name" name="lastName" register={register} />
-          {errors.lastName && <p>{errors.lastName.message}</p>}
+          {errors.lastName && <p className='error'>{errors.lastName.message}</p>}
           <EditingPersonItemSegment label="Age" name="age" register={register} />
-          {errors.age && <p>{errors.age.message}</p>}
+          {errors.age && <p className='error'>{errors.age.message}</p>}
           <EditingPersonItemSegment label="Description" name="description" register={register} />
         </div>
         <div className="person__btns">

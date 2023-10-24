@@ -11,9 +11,9 @@ const schema = yup.object().shape({
   age: yup
     .number()
     .typeError("Age must be a number")
-    .required("Age is required")
     .positive("Age must be a positive number")
-    .integer("Age must be an integer"),
+    .integer("Age must be an integer")
+    .required("Age is required"),
   description: yup.string(),
 });
 
@@ -34,19 +34,19 @@ const AddPersonForm = function ({ create }) {
         type="text"
         placeholder="First Name"
       />
-      {errors.firstName && <p>{errors.firstName.message}</p>}
+      {errors.firstName && <p className='error'>{errors.firstName.message}</p>}
       <input className='myInput'
         {...register("lastName")}
         type="text"
         placeholder="Last Name"
       />
-      {errors.lastName && <p>{errors.lastName.message}</p>}
+      {errors.lastName && <p className='error'>{errors.lastName.message}</p>}
       <input className='myInput'
         {...register("age")}
         type="text"
         placeholder="Age"
       />
-      {errors.age && <p>{errors.age.message}</p>}
+      {errors.age && <p className='error'>{errors.age.message}</p>}
       <input className='myInput'
         {...register("description")}
         type="text"
